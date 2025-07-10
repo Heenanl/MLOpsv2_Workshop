@@ -197,7 +197,8 @@ git commit -m "Initial commit"
 git checkout -b dev
 
 # Push to remote repository (replace with your repository URL)
-git remote add origin <your-repository-url>
+git remote add origin <your-repository-url>   OR
+git remote set-url origin <your-repository-url>
 git push -u origin dev
 ```
 

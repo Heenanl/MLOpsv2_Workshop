@@ -216,6 +216,14 @@ git push -u origin dev
 
 ![image](https://github.com/user-attachments/assets/f6fe84b7-9af5-4e3e-8761-efd9c74f2c2f)
 
+4. Login to Azure portal. 
+Grant following roles to the identities belonging to above service connections on  **Azure ML workspace**.
+   - **AzureML Data Scientist**
+   - **AzureML Compute Operator**
+
+Grant following roles to the identities belonging to above service connections on  **Storage Account**.
+   - **Storage Blob Data Contributor
+
 #### 3.3 Set up Variable Groups
 
 In Azure DevOps , Within **Project** Go to Library inside Pipelines. Create variable groups DevVars and ProdVars with the following variables:
@@ -278,9 +286,12 @@ You may need to set up a self-hosted agent for your Azure DevOps pipelines. Foll
 Reference : https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/windows-agent?view=azure-devops&tabs=IP-V4
 
 1. Go to **Project Settings > Agent pools > Add pool**
-2. Select "Self-hosted" and create a new pool
-3. Download and configure the agent on your machine
+2. Select "Self-hosted" and create a new pool with the name "Self-hosted Agents"
+3. Download and configure the agent on your machine. Provide Agent name as "Self-hosted Agents"
 4. Update your pipeline YAML files to use this agent pool
+
+
+
 
 
 

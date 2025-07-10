@@ -218,7 +218,7 @@ git push -u origin dev
 
 #### 3.3 Set up Variable Groups
 
-Go to Library inside Pipelines. Create variable groups DevVars and ProdVars with the following variables:
+In Azure DevOps , Within **Project** Go to Library inside Pipelines. Create variable groups DevVars and ProdVars with the following variables:
 - resource_group
 - workspace_name
   
@@ -274,7 +274,8 @@ Edit the pipeline you just created. Add the following variables to the pipeline:
 
 ### Self-hosted Agent Requirements
 
-You may need to set up a self-hosted agent for your Azure DevOps pipelines. Follow these steps:
+You may need to set up a self-hosted agent for your Azure DevOps pipelines. Follow these steps: 
+Reference : https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/windows-agent?view=azure-devops&tabs=IP-V4
 
 1. Go to **Project Settings > Agent pools > Add pool**
 2. Select "Self-hosted" and create a new pool

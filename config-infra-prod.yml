@@ -21,10 +21,10 @@ variables:
   # For pipeline reference
   resource_group: rg-$(namespace)-$(environment)
   aml_workspace: mlw-$(namespace)-$(environment)
-  application_insights: mlw$(namespace)$(environment)
-  key_vault: kv$(namespace)$(environment)
-  container_registry: cr$(namespace)$(environment)
-  storage_account: st$(namespace)$(environment)
+  application_insights: mlw$(namespace)$(environment)8a6
+  key_vault: kv$(namespace)$(environment)8a6
+  container_registry: cr$(namespace)$(environment)8a6
+  storage_account: st$(namespace)$(environment)8a6
 
 
   # For terraform reference

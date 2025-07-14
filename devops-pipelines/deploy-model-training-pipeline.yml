@@ -28,11 +28,11 @@ stages:
         steps:
           # 1. checkout your repo
           - checkout: self
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.13'
-              addToPath: true
-              architecture: 'x64'
+          # - task: UsePythonVersion@0
+          #   inputs:
+          #     versionSpec: '3.13'
+          #     addToPath: true
+          #     architecture: 'x64'
               
           # 6.5 Setup local Python venv for SDK run
           - task: PowerShell@2

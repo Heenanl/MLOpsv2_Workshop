@@ -14,9 +14,11 @@ variables:
   - name: version
     value: python-sdk-v2
 
+# pool:
+#   name: Self-hosted Agents
+#   vmImage: windows-latest
 pool:
-  name: Self-hosted Agents
-  vmImage: windows-latest
+  vmImage: 'ubuntu-latest'
 
 stages:
   - stage: DeployTrainingPipeline

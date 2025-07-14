@@ -8,8 +8,8 @@ variables:
       - template: ../config-infra-prod.yml
       - group: ProdVars
   - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      - template: ../config-infra-dev.yml
-      - group: DevVars
+      - template: ../config-infra-prod.yml
+      - group: ProdVars
 
   - name: version
     value: python-sdk-v2

@@ -14,11 +14,10 @@ variables:
   - name: version
     value: python-sdk-v2
 
-# pool:
-#   name: Self-hosted Agents
-#   vmImage: windows-latest
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Self-hosted Agents
+  vmImage: windows-latest
+
 
 stages:
   - stage: DeployTrainingPipeline
@@ -124,6 +123,7 @@ stages:
             inputs:
               versionSpec: '3.13'
               addToPath: true
+              architecture: 'x64'
               
           # 6.5 Setup local Python venv for SDK run
           - task: PowerShell@2

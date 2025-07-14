@@ -4,7 +4,7 @@
 name: deploy-model-training-pipeline
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
       - template: ../config-infra-prod.yml
       - group: ProdVars
   - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:

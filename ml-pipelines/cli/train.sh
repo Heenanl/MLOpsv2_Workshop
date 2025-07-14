@@ -7,6 +7,6 @@ az ml data create --file train/data.yml
 # Register train environment 
 az ml environment create --file train/environment.yml
 # Create pipeline job
-az ml job ______ --file train/pipeline.yml
+az ml job create --file train/pipeline.yml
 # Create pipeline job with automl training job
-az ml job ______ --file train/pipeline_automl.yml
+az ml job create --file train/pipeline_automl.yml

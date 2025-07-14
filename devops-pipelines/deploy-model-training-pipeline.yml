@@ -125,14 +125,14 @@ stages:
               targetType: inline
               script: |
                 Write-Host "Creating and activating venv..."
-                python -m venv .pipeline-venv
+                py -m venv .pipeline-venv
                 & .\.pipeline-venv\Scripts\Activate.ps1
                 Write-Host "Installing packages..."
-                python -m pip install --upgrade pip
-                python -m pip install marshmallow==3.14.0
-                python -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
+                py -m pip install --upgrade pip
+                py -m pip install marshmallow==3.14.0
+                py -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
                 Write-Host "Installed packages:"
-                python -m pip list
+                py -m pip list
                 deactivate
 
           # 7. kick off your SDK pipeline

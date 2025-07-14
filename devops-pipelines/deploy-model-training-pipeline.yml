@@ -28,7 +28,29 @@ stages:
         steps:
           # 1. checkout your repo
           - checkout: self
-
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.13'
+              addToPath: true
+              architecture: 'x64'
+              
+          # 6.5 Setup local Python venv for SDK run
+          - task: PowerShell@2
+            displayName: 'Setup Python Virtual Environment'
+            inputs:
+              targetType: inline
+              script: |
+                Write-Host "Creating and activating venv..."
+                py -m venv .pipeline-venv
+                & .\.pipeline-venv\Scripts\Activate.ps1
+                Write-Host "Installing packages..."
+                py -m pip install --upgrade pip
+                py -m pip install marshmallow==3.14.0
+                py -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
+                Write-Host "Installed packages:"
+                py -m pip list
+                deactivate
+                
           # 2. Install Azure ML extension
           - task: AzureCLI@2
             displayName: 'Install Azure ML Extension'
@@ -119,28 +141,6 @@ stages:
                   --resource-group "$(resource_group)" `
                   --workspace-name "$(aml_workspace)"
           # 6.4 Set Python version to Path
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.13'
-              addToPath: true
-              architecture: 'x64'
-              
-          # 6.5 Setup local Python venv for SDK run
-          - task: PowerShell@2
-            displayName: 'Setup Python Virtual Environment'
-            inputs:
-              targetType: inline
-              script: |
-                Write-Host "Creating and activating venv..."
-                py -m venv .pipeline-venv
-                & .\.pipeline-venv\Scripts\Activate.ps1
-                Write-Host "Installing packages..."
-                py -m pip install --upgrade pip
-                py -m pip install marshmallow==3.14.0
-                py -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
-                Write-Host "Installed packages:"
-                py -m pip list
-                deactivate
 
           # 7. kick off your SDK pipeline
           - task: PowerShell@2

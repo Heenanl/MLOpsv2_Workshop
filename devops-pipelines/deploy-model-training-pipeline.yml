@@ -117,7 +117,12 @@ stages:
                   --description "taxi-training-dataset" `
                   --resource-group "$(resource_group)" `
                   --workspace-name "$(aml_workspace)"
-
+          # 6.4 Set Python version to Path
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.13'
+              addToPath: true
+              
           # 6.5 Setup local Python venv for SDK run
           - task: PowerShell@2
             displayName: 'Setup Python Virtual Environment'

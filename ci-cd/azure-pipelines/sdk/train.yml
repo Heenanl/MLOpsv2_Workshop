@@ -21,11 +21,11 @@ pool:
 trigger: none
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.12.10'
-- script: pip install -r ci-cd/azure-pipelines/dev-requirements.txt
-  displayName: 'pip install notebook reqs'
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.12.10'
+# - script: pip install -r ci-cd/azure-pipelines/dev-requirements.txt
+#   displayName: 'pip install notebook reqs'
 - task: Bash@3
   inputs:
     filePath: 'ci-cd/azure-pipelines/setup-sdk.sh'

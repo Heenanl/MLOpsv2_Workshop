@@ -9,6 +9,7 @@ import os
 
 load_dotenv()
 
+
 def parse_args():
     parser = argparse.ArgumentParser("Deploy Training Pipeline")
     parser.add_argument("--experiment_name", type=str, help="Experiment Name")
@@ -52,7 +53,7 @@ def main():
     print(f"Using compute: {compute.name} ({compute.type})")
 
     # 1. Define components using env_ref
-    parent_dir = "data-science/src"
+    parent_dir = "components"
 
     prep_data = command(
         name="prep_data",

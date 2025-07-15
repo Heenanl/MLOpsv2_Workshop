@@ -3,7 +3,7 @@
 
 name: deploy-model-training-pipeline
 
-variables:
+variables: #To be updated 
   - ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
       - template: ../config-infra-prod.yml
       - group: ProdVars
@@ -11,8 +11,6 @@ variables:
       - template: ../config-infra-prod.yml
       - group: ProdVars
 
-  - name: version
-    value: python-sdk-v2
 
 pool:
   name: Self-hosted Agents

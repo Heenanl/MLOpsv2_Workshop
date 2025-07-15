@@ -71,7 +71,9 @@ There are 2 labs in this workshop:
 
 ## Lab 3. CICD
 
-#### 3.1 Set up Azure DevOps Repository
+The following steps show how to run the model training and deployment pipeline via Azure devops pipelines using Azure ML Cli extension. For simulating the same flow with  SDKv2, we jump to step 3.b.
+
+#### 3.a1 Set up Azure DevOps Repository
 
 1. Create an organization in Azure DevOps and add a project
 2. Initialize a Git repository and clone it to your local machine
@@ -91,14 +93,14 @@ git remote add origin <your-repository-url>   OR
 git remote set-url origin <your-repository-url>
 git push -u origin dev
 ```
-#### 3.2 Set up Variable Groups
+#### 3.a2 Set up Variable Groups
 In Azure DevOps , Within **Project** Go to Library inside Pipelines. Create variable groups DevVars and ProdVars with the following variables:
 - resource_group
 - workspace_name
   
 ![image](https://github.com/user-attachments/assets/8d48f94c-2f3c-48cb-9668-b9b6284cc20b)
 
-#### 3.3 Create Azure DevOps Pipelines
+#### 3.a3 Create Azure DevOps Pipelines
 To set up the CI/CD pipelines in Azure DevOps:
 1. In Azure DevOps, navigate to **Pipelines** in the left sidebar
 2. Click on **New pipeline**
@@ -115,12 +117,20 @@ To set up the CI/CD pipelines in Azure DevOps:
 10. Click **Run** to save and run the pipeline, or **Save** to just save it
 Repeat these steps for each pipeline you want to create. You'll typically want to set up the model training pipeline first, followed by the endpoint deployment pipelines.
 
-#### 3.4 Set up Pipeline Variable
-Edit the pipeline you just created. Add the following variables to the pipeline:
-- subscription_id
-- tenant_id
-- location
-![image](https://github.com/user-attachments/assets/060b2a00-9be2-4ec4-bfec-48436c050fe6)
+
+#### 3.b Deploying via the SDKv2
+1. We don't have a devops-pipeline yml created for this workshop ; but it can be easily created by modifying the yml and adding a python or powershell task to run the python script ml-pipelines/sdk/run_pipeline.py
+2. You can test it locally by running the following command from your VS code powershell terminal.
+```
+python ml-pipelines/sdk/run_pipeline.py `
+                   --experiment_name taxi-train-pipeline `
+                   --compute_name cpu-cluster `
+                   --data_name taxi-data@latest `
+                   --environment_name taxi-train-env `
+                   --enable_monitoring false `
+                   --table_name taximonitoring
+```
+
 
 ## CI/CD Pipeline Workflow
 ### Development Workflow

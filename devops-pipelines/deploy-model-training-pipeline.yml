@@ -41,14 +41,14 @@ stages:
               targetType: inline
               script: |
                 Write-Host "Creating and activating venv..."
-                python -m venv .pipeline-venv
+                python3.12 -m venv .pipeline-venv
                 & .\.pipeline-venv\Scripts\Activate.ps1
                 Write-Host "Installing packages..."
-                python -m pip install --upgrade pip
-                python -m pip install marshmallow==3.14.0
-                python -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
+                python3.12 -m pip install --upgrade pip
+                python3.12 -m pip install marshmallow==3.14.0
+                python3.12 -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
                 Write-Host "Installed packages:"
-                python -m pip list
+                python3.12 -m pip list
                 deactivate
                 
           # 2. Install Azure ML extension

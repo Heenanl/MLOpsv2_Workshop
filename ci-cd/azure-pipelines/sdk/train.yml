@@ -5,11 +5,11 @@ name: deploy-model-training-pipeline
 
 variables:
   - ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
-      - template: ../config-infra-prod.yml
+      - template: ../../../config-infra-prod.yml
       - group: ProdVars
   - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      - template: ../config-infra-dev.yml
-      - group: DevVars
+      - template: ../../../config-infra-prod.yml
+      - group: ProdVars
 
   - name: version
     value: python-sdk-v2
@@ -18,14 +18,14 @@ pool:
   name: Self-hosted Agents
   vmImage: windows-latest
 
-
+trigger: none
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.8'
-- script: pip install -r ci-cd/azure-pipelines/dev-requirements.txt
-  displayName: 'pip install notebook reqs'
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.12.10'
+# - script: pip install -r ci-cd/azure-pipelines/dev-requirements.txt
+#   displayName: 'pip install notebook reqs'
 - task: Bash@3
   inputs:
     filePath: 'ci-cd/azure-pipelines/setup-sdk.sh'
@@ -38,7 +38,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'azureml-mldemo' #name of the AzureML service connection defined in Azure Pipelines
+    azureSubscription: $(ado_service_connection_aml_ws) #name of the AzureML service connection defined in Azure Pipelines
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |

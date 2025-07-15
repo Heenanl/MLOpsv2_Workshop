@@ -1,6 +1,7 @@
 # Azure MLOps (v2) Training
 
-This repo is practice repo for Community IP MLOps In a Day workshop. The goal is to have the participants to build a traing and a deployment pipeline
+This project demonstrates an end-to-end MLOps implementation using Azure Machine Learning and Azure DevOps pipelines. It includes infrastructure setup, model training, and deployment pipelines for both batch and online endpoints.
+
 ## Repo structure 
 
 ```bash
@@ -70,30 +71,27 @@ There are 2 labs in this workshop:
 
 ## Lab 1. Building a training pipeline. It can be a custom model pipeline or automl pipeline.
   - Experiment with notebooks in `notebooks` folder to explore data and model 
-  - Build pipeline by navigating to `ml-pipelines` cli or sdk and running corresponding notebooks
+  - Build pipeline by navigating to `ml-pipelines` and run ml-pipelines\sdk\train-sdkv2.ipynb
   - Review components of the pipeline and fill in missing parts and references 
   - Once pipeline is run, Model will be trained and registered in the WS registry
 
 ## Lab 2. Building a deployment pipeline, it could either a online endpoint or batch online. 
-  - Deploy Model by navigating to `ml-pipelines` cli or sdk and running corresponding notebooks
+  - Deploy Model by navigating to `ml-pipelines` and running corresponding notebooks for batch deployment ml-pipelines\sdk\deploy-batch-endpoint-sdkv2.ipynb or online deployment ml-pipelines\sdk\deploy-online-endpoint-sdkv2.ipynb
   - In this lab, we also provided ci-cd folder to demonstrate Azure Pipeline or Github action orchestration of CI/CD pipeline. 
     - For GH Actions follow https://github.com/lenisha/mlops-v2-workshop/blob/main/ci-cd/README-GH.md
 
 ## Lab 3. CICD
-# GasUni MLOps v2 Project
 
-This project demonstrates an end-to-end MLOps implementation using Azure Machine Learning and Azure DevOps pipelines. It includes infrastructure setup, model training, and deployment pipelines for both batch and online endpoints.
 
 ## Project Structure
 
 ```
 ├── config-infra-dev.yml         # Infrastructure configuration for dev environment
 ├── config-infra-prod.yml        # Infrastructure configuration for prod environment
-├── deploy-azure-resources.ps1   # Script to deploy Azure resources
+├── deploy-azure-resources.ps1   # Script to deploy Infrastructure Azure resources
 ├── environment.yml              # Conda environment file
 ├── requirements.txt             # Python package requirements
 ├── data/                        # Sample data for model training and testing
-├── data-science/                # Data science code (prep, train, evaluate, register)
 └── mlops/                       # MLOps code for Azure ML and DevOps pipelines
 ```
 

@@ -1,8 +1,24 @@
-trigger:
-- main
+
+# Azure Pipelines YAML for training the SDK
+
+name: deploy-model-training-pipeline
+
+variables:
+  - ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
+      - template: ../config-infra-prod.yml
+      - group: ProdVars
+  - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
+      - template: ../config-infra-dev.yml
+      - group: DevVars
+
+  - name: version
+    value: python-sdk-v2
 
 pool:
-  vmImage: ubuntu-latest
+  name: Self-hosted Agents
+  vmImage: windows-latest
+
+
 
 steps:
 - task: UsePythonVersion@0

@@ -1,0 +1,9 @@
+azureml-mlflow
+azure-ai-ml
+pyarrow
+ruamel.yaml
+scikit-learn
+pandas
+joblib
+matplotlib
+python-dotenv

@@ -11,6 +11,7 @@ variables:
   environment: prod
   enable_aml_computecluster: true
   enable_monitoring: false
+  random_suffix: 8a6
 
   # Azure DevOps
   ado_service_connection_rg: gasuni-mlopsv2-rg-sc-prod
@@ -21,10 +22,10 @@ variables:
   # For pipeline reference
   resource_group: rg-$(namespace)-$(environment)
   aml_workspace: mlw-$(namespace)-$(environment)
-  application_insights: mlw$(namespace)$(environment)8a6
-  key_vault: kv$(namespace)$(environment)8a6
-  container_registry: cr$(namespace)$(environment)8a6
-  storage_account: st$(namespace)$(environment)8a6
+  application_insights: mlw$(namespace)$(environment)$(random_suffix)
+  key_vault: kv$(namespace)$(environment)$(random_suffix)
+  container_registry: cr$(namespace)$(environment)$(random_suffix)
+  storage_account: st$(namespace)$(environment)$(random_suffix)
 
 
   # For terraform reference

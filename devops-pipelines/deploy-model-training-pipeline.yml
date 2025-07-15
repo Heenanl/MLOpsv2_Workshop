@@ -8,8 +8,8 @@ variables:
       - template: ../config-infra-prod.yml
       - group: ProdVars
   - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      - template: ../config-infra-dev.yml
-      - group: DevVars
+      - template: ../config-infra-prod.yml
+      - group: ProdVars
 
   - name: version
     value: python-sdk-v2
@@ -17,6 +17,7 @@ variables:
 pool:
   name: Self-hosted Agents
   vmImage: windows-latest
+
 
 stages:
   - stage: DeployTrainingPipeline
@@ -27,7 +28,29 @@ stages:
         steps:
           # 1. checkout your repo
           - checkout: self
-
+          # - task: UsePythonVersion@0
+          #   inputs:
+          #     versionSpec: '3.13'
+          #     addToPath: true
+          #     architecture: 'x64'
+              
+          # 6.5 Setup local Python venv for SDK run
+          - task: PowerShell@2
+            displayName: 'Setup Python Virtual Environment'
+            inputs:
+              targetType: inline
+              script: |
+                Write-Host "Creating and activating venv..."
+                python -m venv .pipeline-venv
+                & .\.pipeline-venv\Scripts\Activate.ps1
+                Write-Host "Installing packages..."
+                python -m pip install --upgrade pip
+                python -m pip install marshmallow==3.14.0
+                python -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
+                Write-Host "Installed packages:"
+                python -m pip list
+                deactivate
+                
           # 2. Install Azure ML extension
           - task: AzureCLI@2
             displayName: 'Install Azure ML Extension'
@@ -117,23 +140,7 @@ stages:
                   --description "taxi-training-dataset" `
                   --resource-group "$(resource_group)" `
                   --workspace-name "$(aml_workspace)"
-
-          # 6.5 Setup local Python venv for SDK run
-          - task: PowerShell@2
-            displayName: 'Setup Python Virtual Environment'
-            inputs:
-              targetType: inline
-              script: |
-                Write-Host "Creating and activating venv..."
-                python -m venv .pipeline-venv
-                & .\.pipeline-venv\Scripts\Activate.ps1
-                Write-Host "Installing packages..."
-                python -m pip install --upgrade pip
-                python -m pip install marshmallow==3.14.0
-                python -m pip install azure-ai-ml==1.0.0 azure-identity==1.10.0 pyyaml==6.0 python-dotenv==1.0.0
-                Write-Host "Installed packages:"
-                python -m pip list
-                deactivate
+          # 6.4 Set Python version to Path
 
           # 7. kick off your SDK pipeline
           - task: PowerShell@2

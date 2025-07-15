@@ -77,7 +77,7 @@ stages:
                   Write-Host "Creating compute cluster 'cpu-cluster'..."
                   # Create train job compute cluster
                   az ml compute create --file train/compute.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
-
+                }
 
           # 5. register your conda environment
           - task: AzureCLI@2

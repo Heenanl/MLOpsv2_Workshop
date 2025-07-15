@@ -5,39 +5,30 @@ This project demonstrates an end-to-end MLOps implementation using Azure Machine
 ## Repo structure 
 
 ```bash
-├── ci-cd - examples of using Azure DevOps Pipeline and Github Action to orchastrate CI CD pipelines
-│   ├── azure-pipelines - code samples for using Azure DevOps Pipeline
-│   │   ├── cli - cli code samples
-│   │   ├── sdk - sdk code samples
-│   ├── dev-requirements.txt - Conda requirement file
-│   ├── setup-cli.sh - Command to prepare Azure Pipeline for Azure ML CLI
-│   ├── setup-sdk.sh - Command to prepare Azure Pipeline for Azure ML SDK (Testing)
-
-├── data
-│   ├── taxi-data.csv - data used for training & testing ML model
-│   ├── taxi-batch.csv - data used as input for testing batch endpoint
-│   ├── taxi-request.json - data used as input for testing online endpoint
-
+├── components - AzureML Components definitions
 ├── component - python scripts of ML workload
 │   ├── prep
 │   |   ├── prep.py - python script that reads raw data and prepare train, val and test datasets
-│   |   ├── test_prep.py - python script used when unit testing `prep.py` 
 │   ├── train
 │   |   ├── train.py - python script that reads train data, trains and saves an ML model
-│   |   ├── test_train.py - python script used when unit testing `train.py` 
 │   ├── evaluate
 │   |   ├── evaluate.py - python script that reads test data and trained model and evaluates model performance
-│   |   ├── test_evaluate.py - python script used when unit testing `evaluate.py` 
 │   ├── register
 │   |   ├── register.py - python script that register trained model in AzureML Model Registry
-│   |   ├── test_register.py - python script used when unit testing `register.py` 
-├── environment - environments needed execute ML workload
-│   ├── train-conda.yml - environment conda specification needed to execute python scripts in ML workload
-├── components - AzureML Components definitions
 │   ├── prep.yml - AzureML Component definition for `prep.py` 
 │   ├── train.yml - AzureML Component definition for `train.py` 
 │   ├── evaluate.yml - AzureML Component definition for `evaluate.py` 
 │   ├── register.yml - AzureML Component definition for `register.py` 
+├── data
+│   ├── taxi-data.csv - data used for training & testing ML model
+│   ├── taxi-batch.csv - data used as input for testing batch endpoint
+│   ├── taxi-request.json - data used as input for testing online endpoint
+├── devops-pipelines - Devops pipelines for MLOps
+│   ├── deploy-model-training-pipeline.yml - Devops pipeline to run model training
+│   ├── deploy-batch-endpoint-pipeline.yml - Devops pipeline for testing batch endpoint
+│   ├── deploy-online-endpoint-pipeline.yml - Devops pipeline for testing online endpoint
+├── environment - environments needed execute ML workload
+│   ├── train-conda.yml - environment conda specification needed to execute python scripts in ML workload
 ├── ml-pipelines
 │   ├── cli - CLI training/deployment pipeline exercise
 │   │   ├── deploy - deploy pipeline assets
@@ -77,19 +68,37 @@ There are 2 labs in this workshop:
 
 ## Lab 2. Building a deployment pipeline, it could either a online endpoint or batch online. 
   - Deploy Model by navigating to `ml-pipelines` and running corresponding notebooks for batch deployment ml-pipelines\sdk\deploy-batch-endpoint-sdkv2.ipynb or online deployment ml-pipelines\sdk\deploy-online-endpoint-sdkv2.ipynb
-  - In this lab, we also provided ci-cd folder to demonstrate Azure Pipeline or Github action orchestration of CI/CD pipeline. 
-    - For GH Actions follow https://github.com/lenisha/mlops-v2-workshop/blob/main/ci-cd/README-GH.md
 
 ## Lab 3. CICD
 
-#### 3.1 Set up Variable Groups
+#### 3.1 Set up Azure DevOps Repository
+
+1. Create an organization in Azure DevOps and add a project
+2. Initialize a Git repository and clone it to your local machine
+3. Add this code to your repository:
+
+```powershell
+# Initialize git repository (if not already done)
+git init
+git add .
+git commit -m "Initial commit"
+
+# Create and switch to dev branch
+git checkout -b dev
+
+# Push to remote repository (replace with your repository URL)
+git remote add origin <your-repository-url>   OR
+git remote set-url origin <your-repository-url>
+git push -u origin dev
+```
+#### 3.2 Set up Variable Groups
 In Azure DevOps , Within **Project** Go to Library inside Pipelines. Create variable groups DevVars and ProdVars with the following variables:
 - resource_group
 - workspace_name
   
 ![image](https://github.com/user-attachments/assets/8d48f94c-2f3c-48cb-9668-b9b6284cc20b)
 
-#### 3.2 Create Azure DevOps Pipelines
+#### 3.3 Create Azure DevOps Pipelines
 To set up the CI/CD pipelines in Azure DevOps:
 1. In Azure DevOps, navigate to **Pipelines** in the left sidebar
 2. Click on **New pipeline**
@@ -106,7 +115,7 @@ To set up the CI/CD pipelines in Azure DevOps:
 10. Click **Run** to save and run the pipeline, or **Save** to just save it
 Repeat these steps for each pipeline you want to create. You'll typically want to set up the model training pipeline first, followed by the endpoint deployment pipelines.
 
-#### 3.3 Set up Pipeline Variable
+#### 3.4 Set up Pipeline Variable
 Edit the pipeline you just created. Add the following variables to the pipeline:
 - subscription_id
 - tenant_id

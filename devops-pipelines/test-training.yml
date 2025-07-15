@@ -52,16 +52,16 @@ stages:
           #       deactivate
                 
           # 2. Install Azure ML extension
-          - task: AzureCLI@2
-            displayName: 'Install Azure ML Extension'
-            inputs:
-              azureSubscription: $(ado_service_connection_aml_ws)
-              scriptType: ps
-              scriptLocation: inlineScript
-              inlineScript: |
-                Write-Host "Installing Azure ML CLI extension... $(ado_service_connection_aml_ws)"
-                az extension add --name ml --yes
-                az extension list
+          # - task: AzureCLI@2
+          #   displayName: 'Install Azure ML Extension'
+          #   inputs:
+          #     azureSubscription: $(ado_service_connection_aml_ws)
+          #     scriptType: ps
+          #     scriptLocation: inlineScript
+          #     inlineScript: |
+          #       Write-Host "Installing Azure ML CLI extension... $(ado_service_connection_aml_ws)"
+          #       az extension add --name ml --yes
+          #       az extension list
 
           # 3. authenticate & “attach” the AML workspace
           - task: AzureCLI@2
@@ -184,13 +184,13 @@ stages:
                     Write-Host "Running Training pipeline"
                     # TRAIN
                     # Create train job compute cluster
-                    #az ml compute create --file train/compute.yml
+                    #az ml compute create --file train/compute.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                     # Register data asset 
-                    az ml data create --file train/data.yml
+                    az ml data create --file train/data.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                     # Register train environment 
-                    az ml environment create --file train/environment.yml
+                    az ml environment create --file train/environment.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                     # Create pipeline job
-                    az ml job create --file train/pipeline.yml
+                    az ml job create --file train/pipeline.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                     # Create pipeline job with automl training job
-                    az ml job create --file train/pipeline_automl.yml
+                    az ml job create --file train/pipeline_automl.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                   workingDirectory: 'ml-pipelines/cli'

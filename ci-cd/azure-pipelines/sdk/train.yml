@@ -5,10 +5,10 @@ name: deploy-model-training-pipeline
 
 variables:
   - ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
-      - template: ../config-infra-prod.yml
+      - template: ../../../config-infra-prod.yml
       - group: ProdVars
   - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      - template: ../config-infra-dev.yml
+      - template: ../../../config-infra-prod.yml
       - group: ProdVars
 
   - name: version
@@ -18,7 +18,7 @@ pool:
   name: Self-hosted Agents
   vmImage: windows-latest
 
-
+trigger: none
 
 steps:
 - task: UsePythonVersion@0

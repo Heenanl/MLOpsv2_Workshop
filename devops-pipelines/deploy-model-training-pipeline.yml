@@ -41,7 +41,7 @@ stages:
               targetType: inline
               script: |
                 Write-Host "Creating and activating venv..."
-                python -m venv .pipeline-venv
+                python3.12 -m venv .pipeline-venv
                 & .\.pipeline-venv\Scripts\Activate.ps1
                 Write-Host "Installing packages..."
                 python3.12 -m pip install --upgrade pip

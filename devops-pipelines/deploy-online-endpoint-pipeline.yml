@@ -7,7 +7,7 @@ variables:
   - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
       # 'main' branch: PRD environment
       - template: ../../config-infra-prod.yml
-  - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
+  - ${{ if ne(variables['Build.SourceBranchName'], 'dev') }}:
       # 'develop' or feature branches: DEV environment
       - template: ../../config-infra-dev.yml
   - name: version

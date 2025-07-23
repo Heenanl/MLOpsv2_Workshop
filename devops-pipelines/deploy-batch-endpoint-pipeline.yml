@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-name: deploy-model-training-pipeline
+name: deploy-batch-endpoint-pipeline
 
 variables: #To be updated 
   - ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
@@ -18,10 +18,10 @@ pool:
 
 
 stages:
-  - stage: DeployTrainingPipeline
-    displayName: Deploy Training Pipeline
+  - stage: DeployBatchEndpointPipeline
+    displayName: Deploy Batch Endpoint Pipeline
     jobs:
-      - job: DeployTrainingPipeline
+      - job: DeployBatchEndpoint
         timeoutInMinutes: 120
         steps:
           # 1. checkout your repo
@@ -57,62 +57,51 @@ stages:
 
           #4. create or validate compute
           - task: AzureCLI@2
-            displayName: 'Ensure AML compute cluster'
+            displayName: 'Ensure AML batch cluster'
             inputs:
               azureSubscription: $(ado_service_connection_aml_ws)
               scriptType: ps
               scriptLocation: inlineScript
               inlineScript: |
-                Write-Host "Checking for compute cluster 'cpu-cluster'..."
+                Write-Host "Checking for batch cluster 'batch-cluster'..."
                 $exists = $false
                 try {
-                  if (az ml compute show --name cpu-cluster --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)" 2>$null) {
-                    Write-Host "Compute cluster exists"
+                  if (az ml compute show --name batch-cluster --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)" 2>$null) {
+                    Write-Host "Batch cluster exists"
                     $exists = $true
                   }
                 } catch { }
                 if (-not $exists) {
-                  Write-Host "Creating compute cluster 'cpu-cluster'..."
-                  # Create train job compute cluster
-                  az ml compute create --file train/compute.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
+                  Write-Host "Creating batch cluster 'batch-cluster'..."
+                  # Create batch cluster
+                  az ml compute create --name batch-cluster --type amlcompute --size Standard_DS3_v2 --min-instances 0 --max-instances 5 --tier dedicated --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
                 }
               workingDirectory: 'ml-pipelines/cli'
 
-          # 5. register your conda environment
+          # 5. Create or update the Batch Endpoint
           - task: AzureCLI@2
-            displayName: 'Register (or bump) training environment'
+            displayName: 'Create or update Batch Endpoint'
             inputs:
               azureSubscription: $(ado_service_connection_aml_ws)
               scriptType: ps
               scriptLocation: inlineScript
               inlineScript: |
-                Write-Host "Registering (or bumping) environment 'taxi-train-env'..."
-                az ml environment create --file train/environment.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
-                    
-                Write-Host "Environment registered/bumped to latest version."
+                Write-Host "Creating Batch Endpoint..."
+                az ml batch-endpoint create --file deploy/batch/batch-endpoint.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
+                Write-Host "Batch Endpoint created."
               workingDirectory: 'ml-pipelines/cli'
                 
-          # 6. register the CSV as a Data Asset
+          # 6. Create Batch Deployment
           - task: AzureCLI@2
-            displayName: 'Register data asset'
+            displayName: 'Create Batch Deployment'
             inputs:
               azureSubscription: $(ado_service_connection_aml_ws)
               scriptType: ps
               scriptLocation: inlineScript
               inlineScript: |
-                Write-Host "Registering data asset 'taxi-data'..."
-                az ml data create --file train/data.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
+                Write-Host "Creating Batch deployment"
+                az ml batch-deployment create --file deploy/batch/batch-deployment.yml --set-default
               workingDirectory: 'ml-pipelines/cli'
 
 
-          - task: AzureCLI@2
-            displayName: 'Run training pipeline'
-            inputs:
-              azureSubscription: $(ado_service_connection_aml_ws)
-              scriptType: ps
-              scriptLocation: inlineScript
-              inlineScript: |
-                Write-Host "Running Training pipeline"
-                az ml job create --file train/pipeline.yml --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)"
-                    
-              workingDirectory: 'ml-pipelines/cli'   
+         

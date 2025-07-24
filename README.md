@@ -77,9 +77,10 @@ The following steps show how to run the model training and deployment pipeline v
 #### 3.1a Set up Azure DevOps Repository
 
 1. Verify/Update the resource names, service connection names in ./config-infra-dev.yml and ./config-infra-prod.yml files.
-2. Create an organization(if not already there) in Azure DevOps and add a project
-3. Initialize a Git repository and clone it to your local machine
-4. Add this code to your repository:
+2. Provide a unique <batch-endpoint-name> in ml-pipelines/cli/deploy/batch/batch-deployment.yml and ml-pipelines/cli/deploy/batch/batch-endpoint.yml
+3. Create an organization(if not already there) in Azure DevOps and add a project
+4. Initialize a Git repository and clone it to your local machine
+5. Add this code to your repository:
 
 ```powershell
 # Initialize git repository (if not already done)

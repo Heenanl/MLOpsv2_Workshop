@@ -77,9 +77,10 @@ The following steps show how to run the model training and deployment pipeline v
 #### 3.1a Set up Azure DevOps Repository
 
 1. Verify/Update the resource names, service connection names in ./config-infra-dev.yml and ./config-infra-prod.yml files.
-2. Create an organization(if not already there) in Azure DevOps and add a project
-3. Initialize a Git repository and clone it to your local machine
-4. Add this code to your repository:
+2. Provide a unique <batch-endpoint-name> in ml-pipelines/cli/deploy/batch/batch-deployment.yml and ml-pipelines/cli/deploy/batch/batch-endpoint.yml
+3. Create an organization(if not already there) in Azure DevOps and add a project
+4. Initialize a Git repository and clone it to your local machine
+5. Add this code to your repository:
 
 ```powershell
 # Initialize git repository (if not already done)
@@ -113,7 +114,6 @@ To set up the CI/CD pipelines in Azure DevOps:
 7. In the path dropdown, select one of the following pipeline files:
    - `/devops-pipelines/deploy-model-training-pipeline.yml` (for model training)
    - `/devops-pipelines/deploy-batch-endpoint-pipeline.yml` (for batch endpoint)
-   - `/devops-pipelines/deploy-online-endpoint-pipeline.yml` (for online endpoint)
 8. Click **Continue**
 9. Review the pipeline YAML file. Check the agent-pool name and update as needed .
 10. Click **Run** to save and run the pipeline, or **Save** to just save it
@@ -149,11 +149,27 @@ python ml-pipelines/sdk/run_pipeline.py `
 
 
 
-## Lab 4. Working with AML Registries (Optional Lab)
-
-1. Please follow the steps mentioned here to create a registry , https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-registries?view=azureml-api-2&tabs=cli
-2. For trying out working with registries ; The code example are based on the nyc_taxi_data_regression sample in the examples repository. To use these files on your development environment,  clone the repository and change directories to the example and  navigate to following notebook tohttps://github.com/Azure/azureml-examples/blob/main/sdk/python/assets/assets-in-registry/share-data-using-registry.ipynb to test how to register data assets to shared registry between workspaces
-3. For Sharing Model components , use https://github.com/Azure/azureml-examples/blob/main/sdk/python/assets/assets-in-registry/share-models-components-environments.ipynb
+## Lab 4. MLOPS with Azure Machine learning registries
+ 
+4.1 Cross-workspace MLOps with registries
+![s](imgs/registry.png)
+ 
+1.  Clone the Example Repo
+ 
+          git clone https://github.com/Azure/azureml-examples.git
+ 
+          cd azureml-examples/sdk/python/assets/assets-in-registry
+ 
+2.  Create a Registry:
+ 
+- Please follow these steps to create a registry :- https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-registries?view=azureml-api-2&tabs=cli
+ 
+3. Register Data & Models:
+   Register your data assets and models in the registry (not just in a workspace).
+ 
+- See Share data using registry example :- https://github.com/Azure/azureml-examples/blob/main/sdk/python/assets/assets-in-registry/share-data-using-registry.ipynb
+ 
+- See Share models/components example :- https://github.com/Azure/azureml-examples/blob/main/sdk/python/assets/assets-in-registry/share-models-components-environments.ipynb
 
 
 

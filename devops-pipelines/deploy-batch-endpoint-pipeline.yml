@@ -100,7 +100,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 Write-Host "Creating Batch deployment"
-                az ml batch-deployment create --file deploy/batch/batch-deployment.yml --set-default
+                az ml batch-deployment create --file deploy/batch/batch-deployment.yml --set-default --resource-group "$(resource_group)" --workspace-name "$(aml_workspace)
               workingDirectory: 'ml-pipelines/cli'
 
 
